@@ -1,0 +1,8 @@
+通信串口：
+/dev/ttyS0
+
+主机端发送数据操作之前，向如下文件节点写入"S1":
+/sys/class/miscgpio/miscgpio/miscgpio
+
+主机端接收数据操作之前，向如下文件节点写入"S0"：
+/sys/class/miscgpio/miscgpio/miscgpio

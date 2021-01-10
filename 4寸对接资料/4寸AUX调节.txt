@@ -1,0 +1,2 @@
+节点：sys/codec-spk-ctl/Line-In-Vol
+值：0到25

@@ -1,0 +1,5 @@
+Intent musicIntent = new Intent();
+musicIntent.setAction("com.dfzt.onlinemusic.service");//service对应的action名称
+musicIntent.setPackage("com.dfzt.olinemusic");//apk包名
+startService(musicIntent);
+bindService(musicIntent,connection, Context.BIND_AUTO_CREATE);        	

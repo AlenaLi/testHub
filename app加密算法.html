@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+
+<div class="well">
+
+    <h3>接口定义</h3>
+
+    <table style="width: 100%" border="1">
+        <tr>
+            <th width="15%">参数名称</th>
+            <th width="15%">类型</th>
+            <th width="50%">描述</th>
+            <th width="20%">备注</th>
+        </tr>
+
+        <tr>
+            <td>service</td>
+            <td>String</td>
+            <td>业务名称</td>
+            <td>无</td>
+        </tr>
+
+        <tr>
+            <td>version</td>
+            <td>String</td>
+            <td>接口版本号</td>
+            <td>无</td>
+        </tr>
+
+        <tr>
+            <td>time</td>
+            <td>String</td>
+            <td>时间</td>
+            <td>无</td>
+        </tr>
+
+        <tr>
+            <td>params</td>
+            <td>String</td>
+            <td>传输数据</td>
+            <td>无</td>
+        </tr>
+
+        <tr>
+            <td>token</td>
+            <td>String</td>
+            <td>接口合法串</td>
+            <td>无</td>
+        </tr>
+
+        <tr>
+            <td>uuid</td>
+            <td>String</td>
+            <td>盐值</td>
+            <td>无</td>
+        </tr>
+
+        <tr>
+            <td>os</td>
+            <td>String</td>
+            <td>android,ios</td>
+            <td>无</td>
+        </tr>
+
+    </table>
+    <br/>
+    <h4>响应数据包基础部分定义, 不加密</h4>
+
+    <br/>
+    <br/>
+    <h3>加密说明<span style="color: red">&nbsp;&nbsp;加密规则先不做考虑，先以明文传输：post 中参数test设置为yes</span></h3>
+    <h3>接口验证与数据加密</h3>
+    <h2>日期格式为：1970年到现在的毫秒值 </h2>
+    <p>uuid 值为UUID，由客户端生成传给服务器解密用。</p>
+    <p>E_KEY为:abcdef</p>
+    <p>时间验证：接口连接地址有效时间为2分钟（客户端需要请求服务器时间(通过systemTime接口获取)，用来校正与客户端时间差，避免由于客户端时间不准确造成的请求超时。）</p>
+
+    <p>请求参数加密(AES),密码:md5(uuid+E_KEY) , params加密方式:base64（AES(json明文参数,密码)) </p>
+    <div class="alert alert-error">
+        偏移量为 <br/>
+        private static final String KEY_ALGORITHM = "AES" <br/>
+        private static final String CIPHER_ALGORITHM = "AES/ECB/PKCS7Padding" <br/>
+    </div>
+
+    <p>Token验证：DigestUtils.md5(service + time + params + salt + version + E_KEY)
+        ,注：params为上步骤中AES加密结果</p>
+
+    <p>返回数据body部分:密码：md5(salt+E_KEY), json(请求返回的body加密数据) :base64(AES(密文，密码)). 注意:
+        此salt为服务器生成传给客户端解密用。</p>
+    <br/>
+    <h3>举例说明</h3>
+
+    <div class="alert alert-error">
+        params = {"acquirer_name":"IBM","address":{"area":"大钟寺","city":"beijing","detailed_address":"中鼎大厦88号","province":"beijing"},"email":"l5@126.com","industry_type":"甲方","password":"password123","phone":"8415646846","username":"zhang122"} <br/>
+
+        salt = 4bb01f68-b814-4eca-bad8-1eb5a0e12dae  <br/>
+        E_KEY = zonguoennbNgne%*21ber <br/>
+        md5Str = md5(uuid + E_KEY) = md5("4bb01f68-b814-4eca-bad8-1eb5a0e12dae" + "zonguoennbNgne%*21ber") = e0bfaaf8ffeb372a06f13753cc190d4a   <br/>
+        base64(AES(params，md5Str)) = wJ+c3JjnR85lNih6wHYK72WB1qm4ogSjLn0aGrMQ30TLEzUzjK3RqB0Z9BxQLowgQmRtSCxszP5enk4+MTY04I7rKfaeIid+RUOZpV4gQmOEF2VpoOZonJvi5pPnGxnOxnlR9t0nDdMQUkGh01qnr/xwnlQc4qnDBu3ez5Pql6BDgAm7yedI43klTgprqr4lSNaQT0IripP8pyWQ0Ujp/MFUyPNZUR9JWio8Gu/fK7v2dswcXrxOH831a2XruFVq9RF/FQgodfgsdWMzeJiYGAWCYlquVe8UTscnkr4TDCnl5PbaJyAMrTaVpULGyE2EEvn81UmhgP1GD2yvYriDEw==
+
+    </div>
+
+
+
+    <h1>响应包</h1>
+    <h3 style="color: blue;">
+        不加密,直接返回明文
+    </h3>
+
+
+
+</div>
+
+</body>
+</html>
+
+

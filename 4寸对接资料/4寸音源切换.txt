@@ -1,0 +1,8 @@
+AUX切换
+节点：sys/codec-spk-ctl/spk-ctl
+
+写“l” 进入AUX模式
+写“a” 进入本地
+
+优声唤醒广播：
+com.dfzt.device.wake
